@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'app_style.dart';
 import 'screens/assistant_screen.dart';
 import 'screens/home_screen.dart';
-import 'screens/other_screens.dart';
+import 'screens/insights_screen.dart';
+import 'screens/profile_screen.dart';
+import 'screens/workout_screen.dart';
 
 void main() => runApp(const GymPartnerApp());
 
