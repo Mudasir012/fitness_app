@@ -59,9 +59,8 @@ class WorkoutScreen extends StatelessWidget {
       ),
       const SizedBox(height: 12),
       FilledButton.icon(
-        onPressed: () => ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Workout selected'))),
+        onPressed: () => ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Workout selected'))),
         style: FilledButton.styleFrom(
           backgroundColor: red,
           foregroundColor: Colors.white,
@@ -91,7 +90,11 @@ class WorkoutScreen extends StatelessWidget {
         '30 min • Intermediate',
         Icons.fitness_center,
       ),
-      const WorkoutListItem('Leg Day', '40 min • Advanced', Icons.directions_run),
+      const WorkoutListItem(
+        'Leg Day',
+        '40 min • Advanced',
+        Icons.directions_run,
+      ),
       const WorkoutListItem(
         'Morning Cardio',
         '20 min • Beginner',

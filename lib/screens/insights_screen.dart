@@ -105,7 +105,11 @@ class InsightsScreen extends StatelessWidget {
               'RESTING HEART RATE',
               Icons.monitor_heart_outlined,
             ),
-            InsightMetric('7.5 HRS', 'SLEEP DURATION', Icons.nightlight_outlined),
+            InsightMetric(
+              '7.5 HRS',
+              'SLEEP DURATION',
+              Icons.nightlight_outlined,
+            ),
             InsightMetric('1.8 L', 'WATER INTAKE', Icons.water_drop_outlined),
             InsightMetric('18.4 KM', 'WEEKLY DISTANCE', Icons.route_outlined),
           ],

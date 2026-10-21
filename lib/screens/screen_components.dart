@@ -212,7 +212,9 @@ class ProfileDetailRow extends StatelessWidget {
       children: [
         Icon(icon, color: orange, size: 19),
         const SizedBox(width: 12),
-        Expanded(child: Text(label, style: const TextStyle(color: muted))),
+        Expanded(
+          child: Text(label, style: const TextStyle(color: muted)),
+        ),
         Text(
           value,
           style: const TextStyle(color: ink, fontWeight: FontWeight.w600),
