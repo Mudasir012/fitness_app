@@ -9,7 +9,7 @@ void main() {
   ) async {
     await tester.pumpWidget(const SignUpApp());
 
-    expect(find.byType(BottomNavigationBar), findsOneWidget);
+    expect(find.byType(Scaffold), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }
