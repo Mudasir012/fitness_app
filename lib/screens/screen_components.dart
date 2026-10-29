@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../app_style.dart';
 
 class ScreenHeader extends StatelessWidget {
-  const ScreenHeader({required this.title, this.trailing, this.onTap});
+  const ScreenHeader({super.key, required this.title, this.trailing, this.onTap});
 
   final String title;
   final IconData? trailing;
@@ -38,7 +38,7 @@ class ScreenHeader extends StatelessWidget {
 }
 
 class ScreenHeadline extends StatelessWidget {
-  const ScreenHeadline(this.title, this.subtitle);
+  const ScreenHeadline(this.title, this.subtitle, {super.key});
 
   final String title;
   final String subtitle;
@@ -64,7 +64,7 @@ class ScreenHeadline extends StatelessWidget {
 }
 
 class SectionLabel extends StatelessWidget {
-  const SectionLabel(this.text);
+  const SectionLabel(this.text, {super.key});
 
   final String text;
 
@@ -81,45 +81,69 @@ class SectionLabel extends StatelessWidget {
 }
 
 class ScreenCard extends StatelessWidget {
-  const ScreenCard({required this.child});
+  const ScreenCard({super.key, required this.child, this.onTap});
 
   final Widget child;
+  final VoidCallback? onTap;
 
   @override
-  Widget build(BuildContext context) => Material(
-    color: surface,
-    borderRadius: BorderRadius.circular(25),
-    clipBehavior: Clip.antiAlias,
-    child: Padding(padding: const EdgeInsets.all(18), child: child),
-  );
+  Widget build(BuildContext context) {
+    final card = Material(
+      color: surface,
+      borderRadius: BorderRadius.circular(25),
+      clipBehavior: Clip.antiAlias,
+      child: Padding(padding: const EdgeInsets.all(18), child: child),
+    );
+
+    if (onTap == null) return card;
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(25),
+        onTap: onTap,
+        child: card,
+      ),
+    );
+  }
 }
 
 class WorkoutCategoryChip extends StatelessWidget {
-  const WorkoutCategoryChip(this.text, this.icon);
+  const WorkoutCategoryChip(this.text, this.icon, {super.key, this.onTap});
 
   final String text;
   final IconData icon;
+  final VoidCallback? onTap;
 
   @override
-  Widget build(BuildContext context) => Chip(
+  Widget build(BuildContext context) => ActionChip(
     avatar: Icon(icon, size: 17, color: red),
-    label: Text(text),
+    label: Text(text, style: const TextStyle(color: ink, fontSize: 12)),
     backgroundColor: surface,
     side: BorderSide.none,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+    onPressed: onTap ?? () {},
   );
 }
 
 class WorkoutListItem extends StatelessWidget {
-  const WorkoutListItem(this.title, this.subtitle, this.icon);
+  const WorkoutListItem(
+    this.title,
+    this.subtitle,
+    this.icon, {
+    super.key,
+    this.onTap,
+  });
 
   final String title;
   final String subtitle;
   final IconData icon;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.only(bottom: 8),
     child: ScreenCard(
+      onTap: onTap,
       child: Row(
         children: [
           Icon(icon, color: red),
@@ -150,7 +174,7 @@ class WorkoutListItem extends StatelessWidget {
 }
 
 class InsightMetric extends StatelessWidget {
-  const InsightMetric(this.value, this.label, this.icon);
+  const InsightMetric(this.value, this.label, this.icon, {super.key});
 
   final String value;
   final String label;
@@ -183,7 +207,7 @@ class InsightMetric extends StatelessWidget {
 }
 
 class ActiveDayDot extends StatelessWidget {
-  const ActiveDayDot(this.active);
+  const ActiveDayDot(this.active, {super.key});
 
   final bool active;
 
@@ -199,7 +223,7 @@ class ActiveDayDot extends StatelessWidget {
 }
 
 class ProfileDetailRow extends StatelessWidget {
-  const ProfileDetailRow(this.icon, this.label, this.value);
+  const ProfileDetailRow(this.icon, this.label, this.value, {super.key});
 
   final IconData icon;
   final String label;
@@ -225,10 +249,11 @@ class ProfileDetailRow extends StatelessWidget {
 }
 
 class ProfileMenuRow extends StatelessWidget {
-  const ProfileMenuRow(this.icon, this.title);
+  const ProfileMenuRow(this.icon, this.title, {super.key, this.onTap});
 
   final IconData icon;
   final String title;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) => ListTile(
@@ -236,6 +261,6 @@ class ProfileMenuRow extends StatelessWidget {
     leading: Icon(icon, color: muted),
     title: Text(title, style: const TextStyle(color: ink, fontSize: 14)),
     trailing: const Icon(Icons.chevron_right, color: muted),
-    onTap: () {},
+    onTap: onTap,
   );
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../app_style.dart';
+import 'nutrition_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.onAsk});
@@ -74,10 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
               value: '${water.toStringAsFixed(1)} L',
               note: 'of 2.5 L goal',
               progress: water / 2.5,
-              action: 'ADD 250 ML',
-              onTap: () => setState(
-                () => water = (water + 0.25).clamp(0.0, 2.5).toDouble(),
-              ),
+              action: 'TAP TO LOG',
+              onTap: () => _showHydrationSheet(),
             ),
           ),
           const SizedBox(width: 12),
@@ -91,6 +90,41 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ],
+      ),
+      const SizedBox(height: 12),
+      _card(
+        child: InkWell(
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute<void>(builder: (_) => const NutritionScreen()),
+          ),
+          borderRadius: BorderRadius.circular(20),
+          child: const Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: raisedSurface,
+                child: Icon(Icons.restaurant_menu, color: orange),
+              ),
+              SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Nutrition & Meal Log',
+                      style: TextStyle(color: ink, fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      '1,480 / 2,200 kcal  •  118g Protein',
+                      style: TextStyle(color: muted, fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(Icons.chevron_right, color: muted),
+            ],
+          ),
+        ),
       ),
       const SizedBox(height: 24),
       const _Label('YOUR NEXT STEP'),
@@ -306,6 +340,93 @@ class _HomeScreenState extends State<HomeScreen> {
               child: card,
             ),
           );
+  }
+
+  void _showHydrationSheet() {
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      builder: (ctx) => Padding(
+        padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Log Hydration',
+                  style: TextStyle(
+                    color: ink,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.close, color: muted),
+                  onPressed: () => Navigator.of(ctx).pop(),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Text(
+              'Current: ${water.toStringAsFixed(2)} L of 2.5 L daily goal',
+              style: const TextStyle(color: muted, fontSize: 13),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                _waterOption(ctx, '+250 ml', 0.25),
+                const SizedBox(width: 10),
+                _waterOption(ctx, '+500 ml', 0.50),
+                const SizedBox(width: 10),
+                _waterOption(ctx, '+750 ml', 0.75),
+              ],
+            ),
+            const SizedBox(height: 14),
+            SizedBox(
+              width: double.infinity,
+              child: TextButton.icon(
+                onPressed: () {
+                  setState(() => water = 0.0);
+                  Navigator.of(ctx).pop();
+                },
+                icon: const Icon(Icons.refresh, size: 16, color: muted),
+                label: const Text('Reset daily water', style: TextStyle(color: muted)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _waterOption(BuildContext ctx, String label, double amount) {
+    return Expanded(
+      child: OutlinedButton(
+        onPressed: () {
+          setState(() => water = (water + amount).clamp(0.0, 3.0));
+          Navigator.of(ctx).pop();
+        },
+        style: OutlinedButton.styleFrom(
+          side: const BorderSide(color: divider),
+          backgroundColor: raisedSurface,
+          foregroundColor: ink,
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+        child: Text(
+          label,
+          style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
+        ),
+      ),
+    );
   }
 }
 
